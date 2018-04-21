@@ -7,6 +7,8 @@ const fixture = {
   harmony: fs.readFileSync(__dirname + '/fixture/8.11.1--harmony.json', 'utf-8')
 }
 
+beforeAll(() => Object.defineProperty(process, 'version', { writable: true }))
+
 beforeEach(() => moxios.install())
 
 afterEach(() => moxios.uninstall())
@@ -63,6 +65,9 @@ test('without harmony', async () => {
 })
 
 test('with harmony', async () => {
+  const _version = process.version
+  process.version = 'v8.11.1'
+
   moxios.stubRequest('https://raw.githubusercontent.com/williamkapke/'
     + 'node-compat-table/gh-pages/results/v8/8.11.1.json', {
       status: 200,
@@ -74,10 +79,7 @@ test('with harmony', async () => {
       responseText: fixture.harmony
     })
 
-  let result = await query(
-    'unicode escape sequences in identifiers',
-    { nodeVersion: '8.11.1' }
-  )
+  let result = await query('unicode escape sequences in identifiers')
   expect(result.result).toEqual([
     {
       esVersion: 'ESNEXT',
@@ -89,7 +91,7 @@ test('with harmony', async () => {
 
   result = await query(
     'unicode escape sequences in identifiers',
-    { nodeVersion: '8.11.1', allowHarmony: true }
+    { allowHarmony: true }
   )
   expect(result.result).toEqual([
     {
@@ -99,4 +101,6 @@ test('with harmony', async () => {
       passed: true
     }
   ])
+
+  process.version = _version
 })

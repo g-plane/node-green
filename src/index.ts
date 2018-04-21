@@ -31,12 +31,7 @@ export interface Options {
   nodeVersion: string
 }
 
-async function query (
-  feature: string,
-  /* istanbul ignore next */
-  options: Partial<Options> = {}
-) {
-  /* istanbul ignore next */
+async function query (feature: string, options: Partial<Options> = {}) {
   const nodeVersion = (options.nodeVersion || process.version).replace('v', '')
   const harmony = options.allowHarmony ? '--harmony' : ''
   const url = 'https://raw.githubusercontent.com/williamkapke/'
