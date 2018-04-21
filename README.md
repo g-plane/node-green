@@ -88,7 +88,7 @@ V8 version.
 
 ##### result
 
-Type: `Array<{ esVersion: string, category: string, feature: string, passed: boolean }>`
+Type: `Array`
 
 An array of query result.
 
@@ -97,6 +97,12 @@ An array of query result.
 Type: `string`
 
 It will be one of `ESNEXT`, `ES2018`, `ES2017`, `ES2016`, `ES2015`.
+
+###### featureType
+
+Type: `string`
+
+It may be one of `misc`, `syntax`, `functions` and so on.
 
 ###### category
 

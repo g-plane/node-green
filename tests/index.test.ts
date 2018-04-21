@@ -26,18 +26,21 @@ test('without harmony', async () => {
   expect(result.result).toEqual([
     {
       esVersion: 'ES2015',
+      featureType: 'misc',
       category: 'Proxy, internal \'get\' calls',
       feature: 'Array.prototype.shift',
       passed: true
     },
     {
       esVersion: 'ES2015',
+      featureType: 'misc',
       category: 'Proxy, internal \'set\' calls',
       feature: 'Array.prototype.shift',
       passed: true
     },
     {
       esVersion: 'ES2015',
+      featureType: 'misc',
       category: 'Proxy, internal \'deleteProperty\' calls',
       feature: 'Array.prototype.shift',
       passed: true
@@ -51,12 +54,14 @@ test('without harmony', async () => {
   expect(result.result).toEqual([
     {
       esVersion: 'ES2015',
+      featureType: 'optimisation',
       category: 'proper tail calls (tail call optimisation)',
       feature: 'direct recursion',
       passed: false
     },
     {
       esVersion: 'ES2015',
+      featureType: 'optimisation',
       category: 'proper tail calls (tail call optimisation)',
       feature: 'mutual recursion',
       passed: false

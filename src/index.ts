@@ -41,6 +41,7 @@ async function query (feature: string, options: Partial<Options> = {}) {
 
   const search: Array<{
     esVersion: string,
+    featureType: string,
     category: string,
     feature: string,
     passed: boolean
@@ -54,6 +55,7 @@ async function query (feature: string, options: Partial<Options> = {}) {
         const info = key.split('›')
         search.push({
           esVersion: ver,
+          featureType: info[0],
           category: info[1],
           feature: info[2],
           passed: typeof result[ver][key] === 'string'
