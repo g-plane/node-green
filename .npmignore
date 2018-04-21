@@ -1,0 +1,28 @@
+# Output files
+!dist/
+
+# Source code
+src/
+
+# Coverage
+coverage/
+
+# Test
+tests/
+
+# Documentation
+docs/
+
+# Misc
+.editorconfig
+tsconfig.json
+tslint.json
+yarn.lock
+
+# CI config
+.travis.yml
+appveyor.yml
+.circleci/
+
+# Other
+.github/

@@ -1,0 +1,55 @@
+{
+  "name": "node-green",
+  "author": {
+    "name": "Pig Fang",
+    "email": "g-plane@hotmail.com",
+    "url": "https://gplane.win/"
+  },
+  "description": "Check Node.js ECMAScript compatibility.",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/g-plane/node-green"
+  },
+  "private": false,
+  "keywords": [],
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "lint": "tslint --formatters-dir ./node_modules/tslint-formatter-beauty -t beauty -p .",
+    "build": "tsc -p .",
+    "prepublishOnly": "yarn build"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json",
+      "node"
+    ],
+    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.ts$"
+  },
+  "dependencies": {
+    "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/moxios": "^0.4.8",
+    "@types/node": "^9.6.6",
+    "codecov": "^3.0.0",
+    "jest": "^22.4.3",
+    "moxios": "^0.4.0",
+    "ts-jest": "^22.4.3",
+    "tslint": "^5.9.1",
+    "tslint-config-gplane": "^2.3.0",
+    "typescript": "^2.8.1"
+  }
+}
