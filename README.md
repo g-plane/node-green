@@ -118,6 +118,10 @@ Type: `boolean`
 
 Indicates whether the feature was passed under that Node.js.
 
+## Related Projects
+
+[node-green-cli](https://github.com/g-plane/node-green-cli) - CLI for this module.
+
 ## Credits
 
 Thanks [@williamkapke](https://github.com/williamkapke)'s work:
