@@ -80,27 +80,13 @@ test('with harmony', async () => {
     })
 
   let result = await query('unicode escape sequences in identifiers')
-  expect(result.result).toEqual([
-    {
-      esVersion: 'ESNEXT',
-      category: 'Function.prototype.toString revision',
-      feature: 'unicode escape sequences in identifiers',
-      passed: false
-    }
-  ])
+  expect(result.result[0].passed).toBe(false)
 
   result = await query(
     'unicode escape sequences in identifiers',
     { allowHarmony: true }
   )
-  expect(result.result).toEqual([
-    {
-      esVersion: 'ESNEXT',
-      category: 'Function.prototype.toString revision',
-      feature: 'unicode escape sequences in identifiers',
-      passed: true
-    }
-  ])
+  expect(result.result[0].passed).toBe(true)
 
   process.version = _version
 })
