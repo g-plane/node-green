@@ -6,7 +6,7 @@
     "url": "https://gplane.win/"
   },
   "description": "Check Node.js ECMAScript compatibility.",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
