@@ -129,6 +129,6 @@ Thanks [@williamkapke](https://github.com/williamkapke)'s work:
 
 ## License
 
-Apache License 2.0
+MIT License
 
 Copyright (c) 2018-present Pig Fang

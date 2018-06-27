@@ -7,7 +7,7 @@
   },
   "description": "Check Node.js ECMAScript compatibility.",
   "version": "0.2.0",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/g-plane/node-green"
