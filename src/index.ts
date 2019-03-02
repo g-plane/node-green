@@ -5,7 +5,7 @@ const ES_VERSIONS = [
   'ES2018',
   'ES2017',
   'ES2016',
-  'ES2015'
+  'ES2015',
 ]
 
 interface NodeTestResult {
@@ -29,19 +29,19 @@ export interface Options {
   nodeVersion: string
 }
 
-async function query (feature: string, options: Partial<Options> = {}) {
+async function query(feature: string, options: Partial<Options> = {}) {
   const nodeVersion = (options.nodeVersion || process.version).replace('v', '')
   const harmony = options.allowHarmony ? '--harmony' : ''
-  const url = 'https://raw.githubusercontent.com/williamkapke/'
-    + `node-compat-table/gh-pages/results/v8/${nodeVersion}${harmony}.json`
+  const url = 'https://raw.githubusercontent.com/williamkapke/' +
+    `node-compat-table/gh-pages/results/v8/${nodeVersion}${harmony}.json`
 
   const result: NodeTestResult = (await axios.get(url)).data
 
   const search: Array<{
-    esVersion: string,
-    featureType: string,
-    category: string,
-    feature: string,
+    esVersion: string
+    featureType: string
+    category: string
+    feature: string
     passed: boolean
   }> = []
   ES_VERSIONS.forEach(ver => {
@@ -58,7 +58,7 @@ async function query (feature: string, options: Partial<Options> = {}) {
           feature: info[2],
           passed: typeof result[ver][key] === 'string'
             ? false
-            : result[ver][key]
+            : result[ver][key],
         })
       })
   })
@@ -66,7 +66,7 @@ async function query (feature: string, options: Partial<Options> = {}) {
   return {
     nodeVersion,
     v8Version: result._engine.replace('v8 ', ''),
-    result: search
+    result: search,
   }
 }
 
