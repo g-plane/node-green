@@ -1,26 +1,30 @@
-import * as fs from 'fs'
-import * as moxios from 'moxios'
+import fetch from 'node-fetch'
 import query from '../src'
 
+jest.mock('node-fetch')
+
+/* eslint-disable global-require */
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fixture = {
-  normal: fs.readFileSync(`${__dirname}/fixture/8.11.1.json`, 'utf-8'),
-  harmony: fs.readFileSync(`${__dirname}/fixture/8.11.1--harmony.json`, 'utf-8'),
+  normal: require('./fixture/8.11.1.json'),
+  harmony: require('./fixture/8.11.1--harmony.json'),
 }
+/* eslint-enable global-require */
+/* eslint-enable @typescript-eslint/no-require-imports */
 
 beforeAll(() => Object.defineProperty(process, 'version', { writable: true }))
 
-beforeEach(() => moxios.install())
-
-afterEach(() => moxios.uninstall())
-
 test('without harmony', async () => {
-  moxios.stubRequest('https://raw.githubusercontent.com/williamkapke/' +
-    'node-compat-table/gh-pages/results/v8/8.11.1.json', {
-    status: 200,
-    responseText: fixture.normal,
+  // eslint-disable-next-line no-extra-parens
+  (fetch as any as jest.Mock).mockResolvedValue({
+    json() {
+      return Promise.resolve(fixture.normal)
+    },
   })
 
   let result = await query('Array.prototype.shift', { nodeVersion: '8.11.1' })
+  expect(fetch).toBeCalledWith('https://raw.githubusercontent.com/williamkapke/' +
+    'node-compat-table/gh-pages/results/v8/8.11.1.json')
   expect(result.nodeVersion).toBe('8.11.1')
   expect(result.v8Version).toBe('6.2.414.50')
   expect(result.result).toEqual([
@@ -73,24 +77,28 @@ test('with harmony', async () => {
   const _version = process.version
   process.version = 'v8.11.1'
 
-  moxios.stubRequest('https://raw.githubusercontent.com/williamkapke/' +
-    'node-compat-table/gh-pages/results/v8/8.11.1.json', {
-    status: 200,
-    responseText: fixture.normal,
-  })
-  moxios.stubRequest('https://raw.githubusercontent.com/williamkapke/' +
-    'node-compat-table/gh-pages/results/v8/8.11.1--harmony.json', {
-    status: 200,
-    responseText: fixture.harmony,
-  })
+  const feature = 'unicode escape sequences in identifiers'
+  // eslint-disable-next-line no-extra-parens
+  ;(fetch as any as jest.Mock)
+    .mockResolvedValueOnce({
+      json() {
+        return Promise.resolve(fixture.normal)
+      },
+    })
+    .mockResolvedValueOnce({
+      json() {
+        return Promise.resolve(fixture.harmony)
+      },
+    })
 
-  let result = await query('unicode escape sequences in identifiers')
+  let result = await query(feature)
+  expect(fetch).toBeCalledWith('https://raw.githubusercontent.com/williamkapke/' +
+    'node-compat-table/gh-pages/results/v8/8.11.1.json')
   expect(result.result[0].passed).toBe(false)
 
-  result = await query(
-    'unicode escape sequences in identifiers',
-    { allowHarmony: true }
-  )
+  result = await query(feature, { allowHarmony: true })
+  expect(fetch).toBeCalledWith('https://raw.githubusercontent.com/williamkapke/' +
+    'node-compat-table/gh-pages/results/v8/8.11.1--harmony.json')
   expect(result.result[0].passed).toBe(true)
 
   process.version = _version

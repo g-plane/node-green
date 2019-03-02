@@ -18,8 +18,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
-    "coverage": "jest --coverage",
-    "lint": "eslint . -f=beauty",
+    "lint": "eslint . -f=beauty --ext=.ts",
     "build": "tsc -p .",
     "prepublishOnly": "yarn build"
   },
@@ -29,21 +28,19 @@
     }
   },
   "dependencies": {
-    "axios": "^0.18.0"
+    "node-fetch": "^2.3.0"
   },
   "devDependencies": {
     "@gplane/tsconfig": "^1.0.0",
     "@types/jest": "^24.0.9",
-    "@types/moxios": "^0.4.8",
     "@types/node": "^9.6.6",
+    "@types/node-fetch": "^2.1.6",
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
-    "codecov": "^3.0.0",
     "eslint": "^5.15.0",
-    "eslint-config-gplane": "^5.1.1",
+    "eslint-config-gplane": "^5.1.2",
     "eslint-formatter-beauty": "^3.0.0",
     "jest": "^24.1.0",
-    "moxios": "^0.4.0",
     "ts-jest": "^24.0.0",
     "typescript": "^3.3.3333"
   }
