@@ -32,6 +32,11 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
+"@gplane/tsconfig@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@gplane/tsconfig/-/tsconfig-1.0.0.tgz#c7e6d56ece3d045abe46d00aece990d8412440f0"
+  integrity sha512-x0Lxt+oBXGVK8qYYLQvohFYQZlt9KgeVfkGAEXWOq38Gxu5KdcsGzPvyWPMhz5Og/U2pWXbjw4+rN4Qa7CPiWQ==
+
 "@types/jest@^22.2.3":
   version "22.2.3"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-22.2.3.tgz#0157c0316dc3722c43a7b71de3fdf3acbccef10d"
@@ -3929,9 +3934,10 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-typescript@^2.8.1:
-  version "2.8.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.3.tgz#5d817f9b6f31bb871835f4edf0089f21abe6c170"
+typescript@^3.3.3333:
+  version "3.3.3333"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3333.tgz#171b2c5af66c59e9431199117a3bcadc66fdcfd6"
+  integrity sha512-JjSKsAfuHBE/fB2oZ8NxtRTk5iGcg6hkYXMnZ3Wc+b2RSqejEqTaem11mHASMnFilHrax3sLK0GDzcJrekZYLw==
 
 uglify-js@^2.6:
   version "2.8.29"

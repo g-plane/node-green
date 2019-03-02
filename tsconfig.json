@@ -1,11 +1,7 @@
 {
+  "extends": "@gplane/tsconfig",
   "compilerOptions": {
     "target": "es2015",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "declaration": true,
-    "outDir": "dist",
-    "strict": true,
     "noImplicitAny": false
   },
   "include": [

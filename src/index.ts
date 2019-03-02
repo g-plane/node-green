@@ -1,6 +1,4 @@
-import * as Axios from 'axios'
-
-const axios = Axios.default
+import axios from 'axios'
 
 const ES_VERSIONS = [
   'ESNEXT',
