@@ -16,6 +16,7 @@
   "keywords": [],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "files": ["dist"],
   "scripts": {
     "test": "jest",
     "lint": "eslint . -f=beauty --ext=.ts",
