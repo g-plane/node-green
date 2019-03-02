@@ -2,11 +2,9 @@
 
 Check Node.js ECMAScript compatibility.
 
-[![Travis](https://img.shields.io/travis/g-plane/node-green.svg?style=flat-square)](https://travis-ci.org/g-plane/node-green)
-[![Codecov](https://img.shields.io/codecov/c/github/g-plane/node-green.svg?style=flat-square)](https://codecov.io/gh/g-plane/node-green)
-[![License](https://img.shields.io/github/license/g-plane/node-green.svg?style=flat-square)](https://github.com/g-plane/node-green/blob/master/LICENSE)
-[![NPM Version](https://img.shields.io/npm/v/node-green.svg?style=flat-square)](https://www.npmjs.com/package/node-green)
-[![NPM Downloads](https://img.shields.io/npm/dm/node-green.svg?style=flat-square)](https://www.npmjs.com/package/node-green)
+![Azure Pipelines](https://flat.badgen.net/azure-pipelines/G-Plane/G-Plane/g-plane.node-green)
+![License](https://flat.badgen.net/github/license/g-plane/node-green)
+![NPM Version](https://flat.badgen.net/npm/v/node-green)
 
 ## Installation
 
@@ -26,7 +24,7 @@ $ npm install node-green
 
 ```javascript
 const nodeGreen = require('node-green')
-void (async () => {
+;(async () => {
   // Use the version of Node.js you're running by default
   let result = await nodeGreen('Array.prototype.includes')
   console.log(result)
