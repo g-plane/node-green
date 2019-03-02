@@ -19,7 +19,7 @@
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage",
-    "lint": "tslint --formatters-dir ./node_modules/tslint-formatter-beauty -t beauty -p .",
+    "lint": "eslint . -f=beauty",
     "build": "tsc -p .",
     "prepublishOnly": "yarn build"
   },
@@ -44,13 +44,15 @@
     "@types/jest": "^22.2.3",
     "@types/moxios": "^0.4.8",
     "@types/node": "^9.6.6",
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
+    "@typescript-eslint/parser": "^1.4.2",
     "codecov": "^3.0.0",
+    "eslint": "^5.15.0",
+    "eslint-config-gplane": "^5.1.1",
+    "eslint-formatter-beauty": "^3.0.0",
     "jest": "^22.4.3",
     "moxios": "^0.4.0",
     "ts-jest": "^22.4.3",
-    "tslint": "^5.9.1",
-    "tslint-config-gplane": "^2.3.0",
-    "tslint-formatter-beauty": "^1.2.0",
     "typescript": "^2.8.1"
   }
 }
