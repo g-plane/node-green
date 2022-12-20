@@ -1,13 +1,5 @@
 import fetch from 'node-fetch'
 
-const ES_VERSIONS = [
-  'ESNEXT',
-  'ES2018',
-  'ES2017',
-  'ES2016',
-  'ES2015',
-]
-
 interface NodeTestResult {
   _version: string
   _engine: string
@@ -38,6 +30,11 @@ async function query(feature: string, options: Partial<Options> = {}) {
   const result: NodeTestResult =
     await fetch(url).then(response => response.json())
 
+  const ES_VERSIONS = Object
+    .keys(result)
+    .filter(key => !key.startsWith('_'))
+    .reverse()
+
   const search: Array<{
     esVersion: string
     featureType: string
@@ -45,6 +42,7 @@ async function query(feature: string, options: Partial<Options> = {}) {
     feature: string
     passed: boolean
   }> = []
+
   ES_VERSIONS.forEach(ver => {
     Object
       .keys(result[ver])
