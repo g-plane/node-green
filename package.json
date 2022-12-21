@@ -22,7 +22,6 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint . -f=beauty --ext=.ts",
-    "lint:fix": "eslint . -f=beauty --ext=.ts --fix",
     "build": "tsc -p .",
     "prepublishOnly": "yarn build"
   },
