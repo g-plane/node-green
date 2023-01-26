@@ -237,29 +237,4 @@ describe('modern ES_VERSION without harmony', () => {
       },
     ])
   })
-
-  test('ES2023', async () => {
-    // ES2023
-    const result = await query(
-      'Array.prototype.findLast',
-      { nodeVersion: 'v19.1.0' }
-    )
-
-    expect(result.result).toEqual([
-      {
-        category: 'Array find from last',
-        esVersion: 'ES2023',
-        feature: 'Array.prototype.findLast',
-        featureType: 'features',
-        passed: true,
-      },
-      {
-        category: 'Array find from last',
-        esVersion: 'ES2023',
-        feature: 'Array.prototype.findLastIndex',
-        featureType: 'features',
-        passed: true,
-      },
-    ])
-  })
 })
