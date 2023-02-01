@@ -8,6 +8,7 @@ jest.mock('node-fetch')
 const fixture = {
   normal: require('./fixture/8.11.1.json'),
   harmony: require('./fixture/8.11.1--harmony.json'),
+  modern: require('./fixture/19.1.0.json'),
 }
 /* eslint-enable global-require */
 /* eslint-enable @typescript-eslint/no-require-imports */
@@ -102,4 +103,138 @@ test('with harmony', async () => {
   expect(result.result[0].passed).toBe(true)
 
   process.version = _version
+})
+
+describe('modern ES_VERSION without harmony', () => {
+  beforeEach(() => {
+    // eslint-disable-next-line no-extra-parens
+    (fetch as any as jest.Mock).mockResolvedValue({
+      json() {
+        return Promise.resolve(fixture.modern)
+      },
+    })
+  })
+
+  test('ES2022', async () => {
+    // ES2022
+    const result = await query('Error.cause', { nodeVersion: '19.1.0' })
+    expect(fetch).toBeCalledWith('https://raw.githubusercontent.com/williamkapke/' +
+      'node-compat-table/gh-pages/results/v8/19.1.0.json')
+    expect(result.nodeVersion).toBe('19.1.0')
+    expect(result.v8Version).toBe('10.7.193.20-node.19')
+    expect(result.result).toEqual([
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'Error has cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'Error.prototype lacks cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'EvalError has cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'EvalError.prototype lacks cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'RangeError has cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'RangeError.prototype lacks cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'ReferenceError has cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'ReferenceError.prototype lacks cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'SyntaxError has cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'SyntaxError.prototype lacks cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'TypeError has cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'TypeError.prototype lacks cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'URIError has cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'URIError.prototype lacks cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'AggregateError has cause',
+        featureType: 'features',
+        passed: true,
+      },
+      {
+        category: 'Error.cause property',
+        esVersion: 'ES2022',
+        feature: 'AggregateError.prototype lacks cause',
+        featureType: 'features',
+        passed: true,
+      },
+    ])
+  })
 })
