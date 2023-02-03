@@ -1,140 +1,137 @@
-import {
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  test,
-  vi,
-  type Mock,
-} from 'vitest'
-import fetch from 'node-fetch'
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest'
+import { MockAgent, setGlobalDispatcher } from 'undici'
 import query from '../src'
 
-vi.mock('node-fetch')
+const mockAgent = new MockAgent()
+setGlobalDispatcher(mockAgent)
 
-/* eslint-disable global-require */
-/* eslint-disable @typescript-eslint/no-require-imports */
 const fixture = {
   normal: require('./fixture/8.11.1.json'),
   harmony: require('./fixture/8.11.1--harmony.json'),
   modern: require('./fixture/19.1.0.json'),
 }
-/* eslint-enable global-require */
-/* eslint-enable @typescript-eslint/no-require-imports */
+
+const mockPool = mockAgent.get('https://raw.githubusercontent.com')
 
 beforeAll(() => {
   Object.defineProperty(process, 'version', { writable: true })
 })
 
-test('without harmony', async () => {
-  ;(fetch as unknown as Mock).mockResolvedValue({
-    json() {
-      return Promise.resolve(fixture.normal)
-    },
+describe('without harmony', () => {
+  beforeEach(() => {
+    mockPool
+      .intercept({
+        path: '/williamkapke/node-compat-table/gh-pages/results/v8/8.11.1.json',
+        method: 'GET',
+      })
+      .reply(200, fixture.normal)
   })
 
-  let result = await query('Array.prototype.shift', { nodeVersion: '8.11.1' })
-  expect(fetch).toBeCalledWith(
-    'https://raw.githubusercontent.com/williamkapke/' +
-      'node-compat-table/gh-pages/results/v8/8.11.1.json'
-  )
-  expect(result.nodeVersion).toBe('8.11.1')
-  expect(result.v8Version).toBe('6.2.414.50')
-  expect(result.result).toEqual([
-    {
-      esVersion: 'ES2015',
-      featureType: 'misc',
-      category: "Proxy, internal 'get' calls",
-      feature: 'Array.prototype.shift',
-      passed: true,
-    },
-    {
-      esVersion: 'ES2015',
-      featureType: 'misc',
-      category: "Proxy, internal 'set' calls",
-      feature: 'Array.prototype.shift',
-      passed: true,
-    },
-    {
-      esVersion: 'ES2015',
-      featureType: 'misc',
-      category: "Proxy, internal 'deleteProperty' calls",
-      feature: 'Array.prototype.shift',
-      passed: true,
-    },
-  ])
-
-  result = await query('proper tail calls (tail call optimisation)', {
-    nodeVersion: 'v8.11.1',
+  it('Array.prototype.shift', async () => {
+    const result = await query('Array.prototype.shift', {
+      nodeVersion: '8.11.1',
+    })
+    expect(result.nodeVersion).toBe('8.11.1')
+    expect(result.v8Version).toBe('6.2.414.50')
+    expect(result.result).toEqual([
+      {
+        esVersion: 'ES2015',
+        featureType: 'misc',
+        category: "Proxy, internal 'get' calls",
+        feature: 'Array.prototype.shift',
+        passed: true,
+      },
+      {
+        esVersion: 'ES2015',
+        featureType: 'misc',
+        category: "Proxy, internal 'set' calls",
+        feature: 'Array.prototype.shift',
+        passed: true,
+      },
+      {
+        esVersion: 'ES2015',
+        featureType: 'misc',
+        category: "Proxy, internal 'deleteProperty' calls",
+        feature: 'Array.prototype.shift',
+        passed: true,
+      },
+    ])
   })
-  expect(result.result).toEqual([
-    {
-      esVersion: 'ES2015',
-      featureType: 'optimisation',
-      category: 'proper tail calls (tail call optimisation)',
-      feature: 'direct recursion',
-      passed: false,
-    },
-    {
-      esVersion: 'ES2015',
-      featureType: 'optimisation',
-      category: 'proper tail calls (tail call optimisation)',
-      feature: 'mutual recursion',
-      passed: false,
-    },
-  ])
+
+  it('proper tail calls (tail call optimisation)', async () => {
+    const result = await query('proper tail calls (tail call optimisation)', {
+      nodeVersion: 'v8.11.1',
+    })
+    expect(result.result).toEqual([
+      {
+        esVersion: 'ES2015',
+        featureType: 'optimisation',
+        category: 'proper tail calls (tail call optimisation)',
+        feature: 'direct recursion',
+        passed: false,
+      },
+      {
+        esVersion: 'ES2015',
+        featureType: 'optimisation',
+        category: 'proper tail calls (tail call optimisation)',
+        feature: 'mutual recursion',
+        passed: false,
+      },
+    ])
+  })
 })
 
-test('with harmony', async () => {
-  const _version = process.version
-  Object.assign(process, { version: 'v8.11.1' })
-
+describe('with harmony', () => {
   const feature = 'unicode escape sequences in identifiers'
-  ;(fetch as unknown as Mock)
-    .mockResolvedValueOnce({
-      json() {
-        return Promise.resolve(fixture.normal)
-      },
-    })
-    .mockResolvedValueOnce({
-      json() {
-        return Promise.resolve(fixture.harmony)
-      },
-    })
+  let originalVersion = process.version
 
-  let result = await query(feature)
-  expect(fetch).toBeCalledWith(
-    'https://raw.githubusercontent.com/williamkapke/' +
-      'node-compat-table/gh-pages/results/v8/8.11.1.json'
-  )
-  expect(result.result[0].passed).toBe(false)
+  beforeEach(() => {
+    originalVersion = process.version
+    Object.assign(process, { version: 'v8.11.1' })
+  })
 
-  result = await query(feature, { allowHarmony: true })
-  expect(fetch).toBeCalledWith(
-    'https://raw.githubusercontent.com/williamkapke/' +
-      'node-compat-table/gh-pages/results/v8/8.11.1--harmony.json'
-  )
-  expect(result.result[0].passed).toBe(true)
+  afterEach(() => {
+    Object.assign(process, { version: originalVersion })
+  })
 
-  Object.assign(process, { version: _version })
+  it('normal', async () => {
+    mockPool
+      .intercept({
+        path: '/williamkapke/node-compat-table/gh-pages/results/v8/8.11.1.json',
+        method: 'GET',
+      })
+      .reply(200, fixture.normal)
+
+    const result = await query(feature)
+    expect(result.result[0].passed).toBe(false)
+  })
+
+  it('harmony', async () => {
+    mockPool
+      .intercept({
+        path: '/williamkapke/node-compat-table/gh-pages/results/v8/8.11.1--harmony.json',
+        method: 'GET',
+      })
+      .reply(200, fixture.harmony)
+
+    const result = await query(feature, { allowHarmony: true })
+    expect(result.result[0].passed).toBe(true)
+  })
 })
 
 describe('modern ES_VERSION without harmony', () => {
   beforeEach(() => {
-    ;(fetch as unknown as Mock).mockResolvedValue({
-      json() {
-        return Promise.resolve(fixture.modern)
-      },
-    })
+    mockPool
+      .intercept({
+        path: '/williamkapke/node-compat-table/gh-pages/results/v8/19.1.0.json',
+        method: 'GET',
+      })
+      .reply(200, fixture.modern)
   })
 
-  test('ES2022', async () => {
+  it('ES2022', async () => {
     // ES2022
     const result = await query('Error.cause', { nodeVersion: '19.1.0' })
-    expect(fetch).toBeCalledWith(
-      'https://raw.githubusercontent.com/williamkapke/' +
-        'node-compat-table/gh-pages/results/v8/19.1.0.json'
-    )
     expect(result.nodeVersion).toBe('19.1.0')
     expect(result.v8Version).toBe('10.7.193.20-node.19')
     expect(result.result).toEqual([

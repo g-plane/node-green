@@ -26,7 +26,8 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "node-fetch": "^2.3.0"
+    "node-fetch": "^2.3.0",
+    "undici": "^5.16.0"
   },
   "devDependencies": {
     "@gplane/tsconfig": "^5.0.0",

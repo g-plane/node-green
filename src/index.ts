@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+import { fetch } from 'undici'
 
 interface NodeTestResult {
   _version: string
@@ -28,9 +28,9 @@ async function query(feature: string, options: Partial<Options> = {}) {
     'https://raw.githubusercontent.com/williamkapke/' +
     `node-compat-table/gh-pages/results/v8/${nodeVersion}${harmony}.json`
 
-  const result: NodeTestResult = await fetch(url).then((response) =>
+  const result = (await fetch(url).then((response) =>
     response.json()
-  )
+  )) as NodeTestResult
 
   const ES_VERSIONS = Object.keys(result)
     .filter((key) => !key.startsWith('_'))
