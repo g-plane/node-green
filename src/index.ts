@@ -23,9 +23,8 @@ async function query(feature: string, options: Partial<Options> = {}) {
     'https://raw.githubusercontent.com/williamkapke/' +
     `node-compat-table/gh-pages/results/v8/${nodeVersion}${harmony}.json`
 
-  const result = (await fetch(url).then((response) =>
-    response.json()
-  )) as NodeTestResult
+  const response = await fetch(url)
+  const result = (await response.json()) as NodeTestResult
 
   const search: Array<{
     esVersion: string
