@@ -23,10 +23,9 @@
     "test": "vitest",
     "fmt": "prettier --write src tests",
     "build": "tsc -p .",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "node-fetch": "^2.3.0",
     "undici": "^5.16.0"
   },
   "devDependencies": {
