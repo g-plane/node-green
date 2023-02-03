@@ -1,4 +1,12 @@
-import { beforeAll, beforeEach, describe, expect, test, vi, type Mock } from "vitest";
+import {
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  test,
+  vi,
+  type Mock,
+} from 'vitest'
 import fetch from 'node-fetch'
 import query from '../src'
 
@@ -19,45 +27,46 @@ beforeAll(() => {
 })
 
 test('without harmony', async () => {
-  (fetch as unknown as Mock).mockResolvedValue({
+  ;(fetch as unknown as Mock).mockResolvedValue({
     json() {
       return Promise.resolve(fixture.normal)
     },
   })
 
   let result = await query('Array.prototype.shift', { nodeVersion: '8.11.1' })
-  expect(fetch).toBeCalledWith('https://raw.githubusercontent.com/williamkapke/' +
-    'node-compat-table/gh-pages/results/v8/8.11.1.json')
+  expect(fetch).toBeCalledWith(
+    'https://raw.githubusercontent.com/williamkapke/' +
+      'node-compat-table/gh-pages/results/v8/8.11.1.json'
+  )
   expect(result.nodeVersion).toBe('8.11.1')
   expect(result.v8Version).toBe('6.2.414.50')
   expect(result.result).toEqual([
     {
       esVersion: 'ES2015',
       featureType: 'misc',
-      category: 'Proxy, internal \'get\' calls',
+      category: "Proxy, internal 'get' calls",
       feature: 'Array.prototype.shift',
       passed: true,
     },
     {
       esVersion: 'ES2015',
       featureType: 'misc',
-      category: 'Proxy, internal \'set\' calls',
+      category: "Proxy, internal 'set' calls",
       feature: 'Array.prototype.shift',
       passed: true,
     },
     {
       esVersion: 'ES2015',
       featureType: 'misc',
-      category: 'Proxy, internal \'deleteProperty\' calls',
+      category: "Proxy, internal 'deleteProperty' calls",
       feature: 'Array.prototype.shift',
       passed: true,
     },
   ])
 
-  result = await query(
-    'proper tail calls (tail call optimisation)',
-    { nodeVersion: 'v8.11.1' }
-  )
+  result = await query('proper tail calls (tail call optimisation)', {
+    nodeVersion: 'v8.11.1',
+  })
   expect(result.result).toEqual([
     {
       esVersion: 'ES2015',
@@ -94,13 +103,17 @@ test('with harmony', async () => {
     })
 
   let result = await query(feature)
-  expect(fetch).toBeCalledWith('https://raw.githubusercontent.com/williamkapke/' +
-    'node-compat-table/gh-pages/results/v8/8.11.1.json')
+  expect(fetch).toBeCalledWith(
+    'https://raw.githubusercontent.com/williamkapke/' +
+      'node-compat-table/gh-pages/results/v8/8.11.1.json'
+  )
   expect(result.result[0].passed).toBe(false)
 
   result = await query(feature, { allowHarmony: true })
-  expect(fetch).toBeCalledWith('https://raw.githubusercontent.com/williamkapke/' +
-    'node-compat-table/gh-pages/results/v8/8.11.1--harmony.json')
+  expect(fetch).toBeCalledWith(
+    'https://raw.githubusercontent.com/williamkapke/' +
+      'node-compat-table/gh-pages/results/v8/8.11.1--harmony.json'
+  )
   expect(result.result[0].passed).toBe(true)
 
   Object.assign(process, { version: _version })
@@ -108,7 +121,7 @@ test('with harmony', async () => {
 
 describe('modern ES_VERSION without harmony', () => {
   beforeEach(() => {
-    (fetch as unknown as Mock).mockResolvedValue({
+    ;(fetch as unknown as Mock).mockResolvedValue({
       json() {
         return Promise.resolve(fixture.modern)
       },
@@ -118,8 +131,10 @@ describe('modern ES_VERSION without harmony', () => {
   test('ES2022', async () => {
     // ES2022
     const result = await query('Error.cause', { nodeVersion: '19.1.0' })
-    expect(fetch).toBeCalledWith('https://raw.githubusercontent.com/williamkapke/' +
-      'node-compat-table/gh-pages/results/v8/19.1.0.json')
+    expect(fetch).toBeCalledWith(
+      'https://raw.githubusercontent.com/williamkapke/' +
+        'node-compat-table/gh-pages/results/v8/19.1.0.json'
+    )
     expect(result.nodeVersion).toBe('19.1.0')
     expect(result.v8Version).toBe('10.7.193.20-node.19')
     expect(result.result).toEqual([

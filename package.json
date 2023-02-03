@@ -22,6 +22,7 @@
   "scripts": {
     "test": "vitest",
     "lint": "eslint . -f=beauty --ext=.ts",
+    "fmt": "prettier --write src tests",
     "build": "tsc -p .",
     "prepublishOnly": "yarn build"
   },
@@ -37,6 +38,7 @@
     "eslint": "^8.33.0",
     "eslint-config-gplane": "^6.2.2",
     "eslint-formatter-beauty": "^3.0.0",
+    "prettier": "^2.8.3",
     "typescript": "^4.9.5",
     "vitest": "^0.28.3"
   }
