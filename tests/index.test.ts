@@ -1,7 +1,8 @@
+import { beforeAll, beforeEach, describe, expect, test, vi, type Mock } from "vitest";
 import fetch from 'node-fetch'
 import query from '../src'
 
-jest.mock('node-fetch')
+vi.mock('node-fetch')
 
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/no-require-imports */
@@ -13,11 +14,12 @@ const fixture = {
 /* eslint-enable global-require */
 /* eslint-enable @typescript-eslint/no-require-imports */
 
-beforeAll(() => Object.defineProperty(process, 'version', { writable: true }))
+beforeAll(() => {
+  Object.defineProperty(process, 'version', { writable: true })
+})
 
 test('without harmony', async () => {
-  // eslint-disable-next-line no-extra-parens
-  (fetch as any as jest.Mock).mockResolvedValue({
+  (fetch as unknown as Mock).mockResolvedValue({
     json() {
       return Promise.resolve(fixture.normal)
     },
@@ -76,11 +78,10 @@ test('without harmony', async () => {
 
 test('with harmony', async () => {
   const _version = process.version
-  process.version = 'v8.11.1'
+  Object.assign(process, { version: 'v8.11.1' })
 
   const feature = 'unicode escape sequences in identifiers'
-  // eslint-disable-next-line no-extra-parens
-  ;(fetch as any as jest.Mock)
+  ;(fetch as unknown as Mock)
     .mockResolvedValueOnce({
       json() {
         return Promise.resolve(fixture.normal)
@@ -102,13 +103,12 @@ test('with harmony', async () => {
     'node-compat-table/gh-pages/results/v8/8.11.1--harmony.json')
   expect(result.result[0].passed).toBe(true)
 
-  process.version = _version
+  Object.assign(process, { version: _version })
 })
 
 describe('modern ES_VERSION without harmony', () => {
   beforeEach(() => {
-    // eslint-disable-next-line no-extra-parens
-    (fetch as any as jest.Mock).mockResolvedValue({
+    (fetch as unknown as Mock).mockResolvedValue({
       json() {
         return Promise.resolve(fixture.modern)
       },
