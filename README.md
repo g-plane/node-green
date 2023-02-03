@@ -2,7 +2,6 @@
 
 Check Node.js ECMAScript compatibility.
 
-![Azure Pipelines](https://flat.badgen.net/azure-pipelines/G-Plane/G-Plane/g-plane.node-green)
 ![License](https://flat.badgen.net/github/license/g-plane/node-green)
 ![NPM Version](https://flat.badgen.net/npm/v/node-green)
 
@@ -11,13 +10,13 @@ Check Node.js ECMAScript compatibility.
 Using Yarn:
 
 ```bash
-$ yarn add node-green
+yarn add node-green
 ```
 
 Using npm:
 
 ```bash
-$ npm install node-green
+npm install node-green
 ```
 
 ## Usage
