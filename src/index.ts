@@ -1,14 +1,9 @@
 import { fetch } from 'undici'
 
-interface NodeTestResult {
+type NodeTestResult = {
   _version: string
   _engine: string
-  ESNEXT: ESResult & { [esFeature: string]: boolean | string }
-  ES2018: ESResult & { [esFeature: string]: boolean | string }
-  ES2017: ESResult & { [esFeature: string]: boolean | string }
-  ES2016: ESResult & { [esFeature: string]: boolean | string }
-  ES2015: ESResult & { [esFeature: string]: boolean | string }
-}
+} & Record<string, ESResult & Record<string, boolean | string>>
 
 interface ESResult {
   _successful: number
@@ -32,34 +27,30 @@ async function query(feature: string, options: Partial<Options> = {}) {
     response.json()
   )) as NodeTestResult
 
-  const ES_VERSIONS = Object.keys(result)
-    .filter((key) => !key.startsWith('_'))
-    .reverse()
-
   const search: Array<{
     esVersion: string
     featureType: string
     category: string
     feature: string
     passed: boolean
-  }> = []
-
-  ES_VERSIONS.forEach((ver) => {
-    Object.keys(result[ver])
-      .filter((key) => !key.startsWith('_'))
-      .filter((key) => key.includes(feature))
-      .forEach((key) => {
-        const info = key.split('›') as [string, string, string]
-        search.push({
-          esVersion: ver,
-          featureType: info[0],
-          category: info[1],
-          feature: info[2],
-          passed:
-            typeof result[ver][key] === 'string' ? false : result[ver][key],
+  }> = Object.entries(result)
+    .filter(([key]) => !key.startsWith('_'))
+    .reverse()
+    .flatMap(([version, info]) =>
+      Object.entries(info)
+        .filter(([key]) => !key.startsWith('_'))
+        .filter(([key]) => key.includes(feature))
+        .map(([key, value]) => {
+          const info = key.split('›') as [string, string, string]
+          return {
+            esVersion: version,
+            featureType: info[0],
+            category: info[1],
+            feature: info[2],
+            passed: typeof value === 'string' ? false : value,
+          }
         })
-      })
-  })
+    )
 
   return {
     nodeVersion,
