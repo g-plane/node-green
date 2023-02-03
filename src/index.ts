@@ -49,7 +49,7 @@ async function query(feature: string, options: Partial<Options> = {}) {
       .filter((key) => !key.startsWith('_'))
       .filter((key) => key.includes(feature))
       .forEach((key) => {
-        const info = key.split('›')
+        const info = key.split('›') as [string, string, string]
         search.push({
           esVersion: ver,
           featureType: info[0],
