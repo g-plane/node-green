@@ -14,12 +14,6 @@
   },
   "private": false,
   "keywords": [],
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
